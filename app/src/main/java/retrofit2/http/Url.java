@@ -31,7 +31,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * Call&lt;ResponseBody&gt; list(@Url String url);
  * </code></pre>
  * <p>
- * See {@linkplain retrofit2.Retrofit.Builder#baseUrl(HttpUrl) base URL} for details of how
+ * See {@linkplain Retrofit.Builder#baseUrl(HttpUrl) base URL} for details of how
  * the value will be resolved against a base URL to create the full endpoint URL.
  */
 @Documented

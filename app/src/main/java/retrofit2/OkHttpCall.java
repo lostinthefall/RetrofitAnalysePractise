@@ -25,6 +25,9 @@ import okio.BufferedSource;
 import okio.ForwardingSource;
 import okio.Okio;
 
+/**
+ * 对 Okhttp 的网络请求封装
+ */
 final class OkHttpCall<T> implements Call<T> {
     private final ServiceMethod<T, ?> serviceMethod;
     private final Object[] args;
@@ -185,6 +188,9 @@ final class OkHttpCall<T> implements Call<T> {
 
     private okhttp3.Call createRawCall() throws IOException {
         Request request = serviceMethod.toRequest(args);
+        /**
+         * 创建 okhttp3.Call
+         */
         okhttp3.Call call = serviceMethod.callFactory.newCall(request);
         if (call == null) {
             throw new NullPointerException("Call.Factory returned null.");
@@ -218,11 +224,14 @@ final class OkHttpCall<T> implements Call<T> {
 
         ExceptionCatchingRequestBody catchingBody = new ExceptionCatchingRequestBody(rawBody);
         try {
+            /**
+             * 把响应数据转化为了我们需要的数据类型对象
+             */
             T body = serviceMethod.toResponse(catchingBody);
             return Response.success(body, rawResponse);
         } catch (RuntimeException e) {
-            // If the underlying source threw an exception, propagate that rather than indicating it was
-            // a runtime exception.
+            // If the underlying source threw an exception,
+            // propagate that rather than indicating it was a runtime exception.
             catchingBody.throwIfCaught();
             throw e;
         }

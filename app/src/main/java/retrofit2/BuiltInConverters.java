@@ -29,7 +29,6 @@ final class BuiltInConverters extends Converter.Factory {
     public Converter<ResponseBody, ?> responseBodyConverter(Type type, Annotation[] annotations,
                                                             Retrofit retrofit) {
 
-
         if (type == ResponseBody.class) {
             return Utils.isAnnotationPresent(annotations, Streaming.class)
                     ? StreamingResponseBodyConverter.INSTANCE
@@ -43,7 +42,9 @@ final class BuiltInConverters extends Converter.Factory {
 
     @Override
     public Converter<?, RequestBody> requestBodyConverter(Type type,
-                                                          Annotation[] parameterAnnotations, Annotation[] methodAnnotations, Retrofit retrofit) {
+                                                          Annotation[] parameterAnnotations,
+                                                          Annotation[] methodAnnotations,
+                                                          Retrofit retrofit) {
         if (RequestBody.class.isAssignableFrom(Utils.getRawType(type))) {
             return RequestBodyConverter.INSTANCE;
         }

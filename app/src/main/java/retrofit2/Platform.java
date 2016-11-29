@@ -71,27 +71,6 @@ class Platform {
         throw new UnsupportedOperationException();
     }
 
-//    @IgnoreJRERequirement // Only classloaded and used on Java 8.
-//    static class Java8 extends Platform {
-//        @Override
-//        boolean isDefaultMethod(Method method) {
-//            return method.isDefault();
-//        }
-//
-//        @Override
-//        Object invokeDefaultMethod(Method method, Class<?> declaringClass, Object object,
-//                                   Object... args) throws Throwable {
-//            // Because the service interface might not be public, we need to use a MethodHandle lookup
-//            // that ignores the visibility of the declaringClass.
-//            Constructor<Lookup> constructor = Lookup.class.getDeclaredConstructor(Class.class, int.class);
-//            constructor.setAccessible(true);
-//            return constructor.newInstance(declaringClass, -1 /* trusted */)
-//                    .unreflectSpecial(method, declaringClass)
-//                    .bindTo(object)
-//                    .invokeWithArguments(args);
-//        }
-//    }
-
     static class Android extends Platform {
         @Override
         public Executor defaultCallbackExecutor() {

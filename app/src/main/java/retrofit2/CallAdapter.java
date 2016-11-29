@@ -20,6 +20,11 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 /**
+ * CallAdapter 本身采用了适配器模式
+ * 对 Call 进行转换
+ */
+
+/**
  * Adapts a {@link Call} with response type {@code R} into the type of {@code T}. Instances are
  * created by {@linkplain Factory a factory} which is
  * {@linkplain Retrofit.Builder#addCallAdapterFactory(Factory) installed} into the {@link Retrofit}

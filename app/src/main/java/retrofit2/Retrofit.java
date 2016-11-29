@@ -167,14 +167,13 @@ public final class Retrofit {
                      *          Type returnType,
                      *          Annotation[] annotations)}
                      */
-                    /*=================================================*\
-                     * QUESTION:
-                     * 1.还没找到【被代理的class】在哪里
-                    \*=================================================*/
                     return serviceMethod.callAdapter.adapt(okHttpCall);
                     /**----------------------！！！！！！！----------
                      * return method.invoke( 被代理的class , args );
                      **----------------------！！！！！！！----------
+                     * create方法采用的代理模式和正常的代理模式并不一样，
+                     * 正常的代理模式只是对真实对象的一层控制，这个真实对象是实现对应的接口的，
+                     * 而这里并没有真实的对象，它把方法调用最终全部转发到OKHttp了。
                      */
                 }
         );
@@ -606,7 +605,7 @@ public final class Retrofit {
             okhttp3.Call.Factory callFactory = this.callFactory;
             if (callFactory == null) {
                 /**
-                 * 没有的话，她会自动创建一个 OkHttpClient()
+                 * 默认的 callFactory 为 OkHttpClient()
                  */
                 callFactory = new OkHttpClient();
             }
