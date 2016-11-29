@@ -62,6 +62,10 @@ import retrofit2.http.Url;
 final class ServiceMethod<R, T> {
     // Upper and lower characters, digits, underscores, and hyphens, starting with a character.
     static final String PARAM = "[a-zA-Z][a-zA-Z0-9_-]*";
+    /*=================================================*\
+     * QUESTION:
+     * 1.还是不知道这里的正则表达式是怎么用的...
+    \*=================================================*/
     /*
      * RegEx : 正则表达式
      * String str1 = "\\{( [a-zA-Z][a-zA-Z0-9_-]* )\\}" // 一对有意义的大括号
@@ -85,9 +89,23 @@ final class ServiceMethod<R, T> {
     private final ParameterHandler<?>[] parameterHandlers;
 
     ServiceMethod(Builder<R, T> builder) {
+        /**
+         *  负责创建 HTTP 请求，HTTP 请求被抽象为了 okhttp3.Call 类，
+         *  它表示一个已经准备好，可以随时执行的 HTTP 请求
+         */
         this.callFactory = builder.retrofit.callFactory();
+        /**
+         * 把 retrofit2.Call<T> 转为 T
+         * （注意和 okhttp3.Call 区分开来，retrofit2.Call<T> 表示的是对一个 Retrofit 方法的调用），
+         * 这个过程会发送一个 HTTP 请求，拿到服务器返回的数据（通过 okhttp3.Call 实现），
+         * 并把数据转换为声明的 T 类型对象（通过 Converter<F, T> 实现）
+         */
         this.callAdapter = builder.callAdapter;
         this.baseUrl = builder.retrofit.baseUrl();
+        /**
+         * Converter<ResponseBody, T> 类型，负责把服务器返回的数据
+         * （JSON、XML、二进制或者其他格式，由 ResponseBody 封装）转化为 T 类型的对象
+         */
         this.responseConverter = builder.responseConverter;
         this.httpMethod = builder.httpMethod;
         this.relativeUrl = builder.relativeUrl;
@@ -96,6 +114,9 @@ final class ServiceMethod<R, T> {
         this.hasBody = builder.hasBody;
         this.isFormEncoded = builder.isFormEncoded;
         this.isMultipart = builder.isMultipart;
+        /**
+         * 负责解析 API 定义时每个方法的参数，并在构造 HTTP 请求时设置参数
+         */
         this.parameterHandlers = builder.parameterHandlers;
     }
 
@@ -175,7 +196,7 @@ final class ServiceMethod<R, T> {
         }
 
         /**
-         * 就是这个方法
+         * 就是这个方法 build 出一个 ServiceMethod
          */
         public ServiceMethod build() {
             callAdapter = createCallAdapter();

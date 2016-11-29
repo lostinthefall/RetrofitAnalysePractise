@@ -136,6 +136,9 @@ public final class Retrofit {
      * </pre>
      */
     @SuppressWarnings("unchecked") // Single-interface proxy creation guarded by parameter safety.
+    /**
+     * 传入的 service 就是一个 apiStore
+     */
     public <T> T create(final Class<T> service) {
         Utils.validateServiceInterface(service);
         if (validateEagerly) {
@@ -144,6 +147,11 @@ public final class Retrofit {
         return (T) Proxy.newProxyInstance(
                 service.getClassLoader(),
                 new Class<?>[]{service},
+                /**
+                 * Object proxy ：代理对象。
+                 * Method method ：正在执行的方法。
+                 * Object[] objects ：调用目标方法时传入的实参。
+                 */
                 (proxy, method, args) -> {
                     /*=================================================*\
                      * QUESTION:
@@ -161,11 +169,12 @@ public final class Retrofit {
                      */
                     /*=================================================*\
                      * QUESTION:
-                     * 1.返回了一个OkHttpCall，说好的invoke呢？
+                     * 1.还没找到【被代理的class】在哪里
                     \*=================================================*/
                     return serviceMethod.callAdapter.adapt(okHttpCall);
-                    /**
+                    /**----------------------！！！！！！！----------
                      * return method.invoke( 被代理的class , args );
+                     **----------------------！！！！！！！----------
                      */
                 }
         );
