@@ -138,7 +138,7 @@ public final class Retrofit {
     @SuppressWarnings("unchecked") // Single-interface proxy creation guarded by parameter safety.
     public <T> T create(final Class<T> service) {
         Utils.validateServiceInterface(service);
-        if  (validateEagerly) {
+        if (validateEagerly) {
             eagerlyValidateMethods(service);
         }
         return (T) Proxy.newProxyInstance(
